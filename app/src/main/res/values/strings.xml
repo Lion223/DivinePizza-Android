@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Divine Pizza</string>
+    <string name="phone_number">Мобільний номер</string>
+    <string name="resent_code"><u>Повторно відправити код</u></string>
+    <string name="confirm_code">Код підтвердження</string>
+    <string name="name_hint">Ім\'я</string>
+</resources>

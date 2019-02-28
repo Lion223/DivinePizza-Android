@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/gradient_background"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="10sp"
+        android:orientation="vertical"
+        >
+
+        <ImageView
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/onwhite_logo"
+            android:layout_gravity="center"
+            android:layout_marginTop="50sp"
+            />
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_marginTop="30sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:indeterminate="true" />
+
+        <com.vicmikhailau.maskededittext.MaskedEditText
+            android:id="@+id/phone_number"
+            android:layout_width="250sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40sp"
+            android:autofillHints="phone"
+            android:backgroundTint="?attr/textColor"
+            android:digits="1234567890"
+            android:focusableInTouchMode="true"
+            android:hint="@string/phone_number"
+            android:imeOptions="actionNext"
+            android:inputType="phone"
+            android:singleLine="true"
+            android:textAlignment="center"
+            android:textSize="24sp"
+            app:mask="+38(###) ###-##-##" />
+
+        <TextView
+            android:id="@+id/repeat_code"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:gravity="center"
+            android:enabled="false"
+            android:text="@string/resent_code" />
+
+        <EditText
+            android:id="@+id/confirm_code"
+            android:layout_width="250sp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="40sp"
+            android:backgroundTint="?attr/textColor"
+            android:hint="@string/confirm_code"
+            android:inputType="numberPassword"
+            android:textAlignment="center"
+            android:enabled="false"
+            android:textSize="24sp"
+            android:singleLine="true"
+            />
+
+
+    </LinearLayout>
+</LinearLayout>

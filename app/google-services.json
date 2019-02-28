@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "413025854533",
+    "firebase_url": "https://divine-pizza.firebaseio.com",
+    "project_id": "divine-pizza",
+    "storage_bucket": "divine-pizza.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:413025854533:android:ed805088b2ca448b",
+        "android_client_info": {
+          "package_name": "com.github.lion223.divinepizza"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "413025854533-0f7j79aov1nd2khvfm3qckkc8rbu0qj8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.github.lion223.divinepizza",
+            "certificate_hash": "6ceb4796ab5c46889e49552b4aa18c2c5e56378f"
+          }
+        },
+        {
+          "client_id": "413025854533-r624io0t1masav3sbjmn7gqer3o6ebhn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0KaosPRivC1Ra0q0KtgpZuWRjnnz5yz8"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "413025854533-r624io0t1masav3sbjmn7gqer3o6ebhn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
