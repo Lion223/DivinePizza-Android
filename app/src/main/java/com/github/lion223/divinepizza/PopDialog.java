@@ -28,7 +28,7 @@ public class PopDialog extends AppCompatDialogFragment {
                     public void onClick(DialogInterface dialog, int which) {
                         String name = editTextName.getText().toString();
                         listener.applyName(name);
-                        listener.finishIntent();
+                        listener.addToDb();
                     }
                 });
 
@@ -51,7 +51,7 @@ public class PopDialog extends AppCompatDialogFragment {
 
     public interface PopDialogListener{
         void applyName(String name);
-        void finishIntent();
+        void addToDb();
     }
 }
 

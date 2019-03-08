@@ -5,72 +5,62 @@
     android:background="@drawable/gradient_background"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10sp"
+    android:orientation="vertical"
     tools:context=".LoginActivity">
-    <LinearLayout
+
+    <ImageView
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/onwhite_logo"
+        android:layout_gravity="center"
+        android:layout_marginTop="50sp"
+        android:contentDescription="@string/logo_desc"
+        />
+
+    <com.vicmikhailau.maskededittext.MaskedEditText
+        android:id="@+id/phone_number"
+        android:layout_width="250sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="120dp"
+        android:autofillHints="phone"
+        android:backgroundTint="?attr/textColor"
+        android:digits="1234567890"
+        android:focusableInTouchMode="true"
+        android:fontFamily="@font/montserrat_regular2"
+        android:hint="@string/phone_number"
+        android:imeOptions="actionNext"
+        android:inputType="phone"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textSize="24sp"
+        app:mask="+38(###) ###-##-##" />
+
+    <TextView
+        android:id="@+id/repeat_code"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10sp"
-        android:orientation="vertical"
-        >
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/montserrat_regular"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center"
+        android:enabled="false"
+        android:text="@string/resent_code" />
 
-        <ImageView
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:src="@drawable/onwhite_logo"
-            android:layout_gravity="center"
-            android:layout_marginTop="50sp"
-            />
+    <EditText
+        android:id="@+id/confirm_code"
+        android:layout_width="250sp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="50dp"
+        android:backgroundTint="?attr/textColor"
+        android:enabled="false"
+        android:fontFamily="@font/montserrat_regular2"
+        android:hint="@string/confirm_code"
+        android:inputType="numberPassword"
+        android:singleLine="true"
+        android:textAlignment="center"
+        android:textSize="24sp" />
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_marginTop="30sp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true" />
-
-        <com.vicmikhailau.maskededittext.MaskedEditText
-            android:id="@+id/phone_number"
-            android:layout_width="250sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="40sp"
-            android:autofillHints="phone"
-            android:backgroundTint="?attr/textColor"
-            android:digits="1234567890"
-            android:focusableInTouchMode="true"
-            android:hint="@string/phone_number"
-            android:imeOptions="actionNext"
-            android:inputType="phone"
-            android:singleLine="true"
-            android:textAlignment="center"
-            android:textSize="24sp"
-            app:mask="+38(###) ###-##-##" />
-
-        <TextView
-            android:id="@+id/repeat_code"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:gravity="center"
-            android:enabled="false"
-            android:text="@string/resent_code" />
-
-        <EditText
-            android:id="@+id/confirm_code"
-            android:layout_width="250sp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="40sp"
-            android:backgroundTint="?attr/textColor"
-            android:hint="@string/confirm_code"
-            android:inputType="numberPassword"
-            android:textAlignment="center"
-            android:enabled="false"
-            android:textSize="24sp"
-            android:singleLine="true"
-            />
-
-
-    </LinearLayout>
 </LinearLayout>

@@ -2,7 +2,6 @@ package com.github.lion223.divinepizza;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -12,13 +11,11 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.TaskCompletionSource;
 import com.google.android.gms.tasks.TaskExecutors;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
@@ -28,13 +25,12 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
-
 
 public class LoginActivity extends AppCompatActivity implements PopDialog.PopDialogListener {
 
@@ -42,7 +38,6 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
     EditText editTextPhoneNumber;
     EditText editTextConfirmCode;
     TextView textViewRepetitionCode;
-    ProgressBar progressBar;
 
     // змінні Firebase
     private FirebaseAuth mAuth;
@@ -61,28 +56,25 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
     private CountDownTimer countDownTimer;
 
     private Boolean firstTimeEnter;
+    private boolean userAdded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         mAuth = FirebaseAuth.getInstance();
+        db = FirebaseFirestore.getInstance();
+        users = db.collection("users");
         initCallbacks();
 
         editTextPhoneNumber = findViewById(R.id.phone_number);
         editTextConfirmCode = findViewById(R.id.confirm_code);
         textViewRepetitionCode = findViewById(R.id.repeat_code);
-        progressBar = findViewById(R.id.progressBar);
-
-
-        Typeface montserrat = Typeface.createFromAsset(getAssets(),"fonts/Montserrat-Regular.otf");
-        editTextPhoneNumber.setTypeface(montserrat);
-        editTextConfirmCode.setTypeface(montserrat);
 
         textViewRepetitionCode.setVisibility(View.INVISIBLE);
-        progressBar.setVisibility(View.INVISIBLE);
 
-        cToast = new CustomToast(Color.rgb(28,28,28), Color.WHITE, this, new Toast(getApplicationContext()));
+        cToast = new CustomToast(Color.rgb(28,28,28), Color.WHITE,
+                this, new Toast(getApplicationContext()));
 
 
         editTextPhoneNumber.setOnEditorActionListener(
@@ -100,10 +92,10 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
                                     editTextConfirmCode.setEnabled(true);
                                     if(countDownTimer == null){
                                         sendVerificationCode(phoneNumber);
-                                    }else{
+                                    }
+                                    else{
                                         cToast.show("Очікуйте кінця затримки відправки коду");
                                     }
-
                                 }
                                 else{
                                     editTextConfirmCode.setEnabled(false);
@@ -130,7 +122,8 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (event == null || !event.isShiftPressed()) {
                                 if(isConfirmCodeCorrect()){
-                                    PhoneAuthCredential credential = PhoneAuthProvider.getCredential(mVerificationId, sendConfirmCode);
+                                    PhoneAuthCredential credential =
+                                            PhoneAuthProvider.getCredential(mVerificationId, sendConfirmCode);
                                     signInWithPhoneAuthCredential(credential);
                                 }
                                 else{
@@ -151,7 +144,6 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
                     resendVerificationCode(phoneNumber, mResendToken);
                 else {
                     cToast.show("Повторна відправка коду на даний момент недоступна");
-                    onBackPressed();
                 }
             }
         });
@@ -214,12 +206,11 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
     }
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential){
-        mAuth.signInWithCredential(credential).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+        mAuth.signInWithCredential(credential).addOnCompleteListener(this,
+                new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-
-                    //addUserToDb();
                     if(firstTimeEnter){
                         openDialog();
                     }
@@ -271,7 +262,8 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
             textViewRepetitionCode.setEnabled(false);
             countDownTimer = new CountDownTimer(60000, 1000) {
                 public void onTick(long millisUntilFinished) {
-                    textViewRepetitionCode.setText("Повторно відправити код (" + millisUntilFinished / 1000 + ")");
+                    textViewRepetitionCode
+                            .setText("Повторно відправити код (" + millisUntilFinished / 1000 + ")");
                 }
 
                 public void onFinish() {
@@ -286,73 +278,23 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
     }
 
     private void isUserNew(@NonNull final FirebaseCallback firebaseCallback){
-        db = FirebaseFirestore.getInstance();
-        users = db.collection("users");
-        docRef = users.document(phoneNumber);
-        docRef.get().addOnCompleteListener(this, new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    firebaseCallback.onCallback(!document.exists());
-                } else {
-                    Log.d("Firebase document search", "get failed with ", task.getException());
-                }
-            }
-        });
-    }
-
-    private void addUserToDb(){
-        db = FirebaseFirestore.getInstance();
-        users = db.collection("users");
-        docRef = users.document(phoneNumber);
-        docRef.get().addOnCompleteListener(this, new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (!document.exists()) {
-                        Map<String, Object> user = new HashMap<>();
-                        user.put("phone_number", phoneNumber);
-                        user.put("name", username);
-                        users.document(phoneNumber).set(user);
-
+        users.whereEqualTo("phone_number", phoneNumber)
+            .get()
+            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    if(task.isSuccessful()){
+                        QuerySnapshot qs = task.getResult();
+                        firebaseCallback.onCallback(qs.getDocuments().isEmpty());
                     }
-                } else {
-                    Log.d("Firebase document search", "get failed with ", task.getException());
                 }
-            }
-        });
+            });
     }
 
     private void openDialog(){
-        if(firstTimeEnter){
-            PopDialog dialog = new PopDialog();
-            dialog.setCancelable(false);
-            dialog.show(getSupportFragmentManager(),"Pop dialog");
-        }
-    }
-
-    private Task<Boolean> isFirstTime(final String phoneNumber){
-        final TaskCompletionSource<Boolean> tcs = new TaskCompletionSource<>();
-        db = FirebaseFirestore.getInstance();
-        users = db.collection("users");
-        docRef = users.document(phoneNumber);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (!document.exists()) {
-                        tcs.setResult(true);
-                    }
-                } else {
-                    Log.d("Firebase document search", "get failed with ", task.getException());
-                    tcs.setException(task.getException());
-                }
-            }
-        });
-        return tcs.getTask();
+        PopDialog dialog = new PopDialog();
+        dialog.setCancelable(false);
+        dialog.show(getSupportFragmentManager(),"Pop dialog");
     }
 
     @Override
@@ -361,11 +303,27 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
     }
 
     @Override
-    public void finishIntent() {
-        Intent intent = new Intent(LoginActivity.this, MainScreenActivity.class);
-        startActivity(intent);
-        finish();
+    public void addToDb() {
+        addUserToDb(phoneNumber);
+    }
+
+    private void addUserToDb(final String phoneNumber){
+        Map<String, Object> user = new HashMap<>();
+        user.put("phone_number", phoneNumber);
+        user.put("name", username);
+        users.document().set(user).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Intent intent = new Intent(LoginActivity.this, MainScreenActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
+            }
+        });
     }
 }
+
+
 
 
