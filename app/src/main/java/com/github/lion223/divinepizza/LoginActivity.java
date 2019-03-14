@@ -2,10 +2,10 @@ package com.github.lion223.divinepizza;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -35,9 +35,9 @@ import java.util.concurrent.TimeUnit;
 public class LoginActivity extends AppCompatActivity implements PopDialog.PopDialogListener {
 
     // елементи вікна
-    EditText editTextPhoneNumber;
-    EditText editTextConfirmCode;
-    TextView textViewRepetitionCode;
+    private EditText editTextPhoneNumber;
+    private EditText editTextConfirmCode;
+    private TextView textViewRepetitionCode;
 
     // змінні Firebase
     private FirebaseAuth mAuth;
@@ -55,8 +55,7 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
     private CustomToast cToast;
     private CountDownTimer countDownTimer;
 
-    private Boolean firstTimeEnter;
-    private boolean userAdded = false;
+    private Boolean firstTimeEnter = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +88,12 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
                                         event.getKeyCode() == KeyEvent.KEYCODE_ENTER) {
                             if (event == null || !event.isShiftPressed()) {
                                 if(isPhoneNumberCorrect()){
+                                    isUserNew(new FirebaseCallback() {
+                                        @Override
+                                        public void onCallback(Object data) {
+                                            firstTimeEnter = (boolean) data;
+                                        }
+                                    });
                                     editTextConfirmCode.setEnabled(true);
                                     if(countDownTimer == null){
                                         sendVerificationCode(phoneNumber);
@@ -211,13 +216,17 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 if(task.isSuccessful()){
-                    if(firstTimeEnter){
-                        openDialog();
-                    }
-                    else{
-                        Intent intent = new Intent(LoginActivity.this, MainScreenActivity.class);
-                        startActivity(intent);
-                        finish();
+                    try {
+                        if(firstTimeEnter){
+                            openDialog();
+                        }
+                        else if(!firstTimeEnter){
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+                    } catch (NullPointerException e) {
+                        cToast.show("Спробуйте ще раз");
                     }
                 }
                 else{
@@ -237,12 +246,6 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
                 TaskExecutors.MAIN_THREAD,
                 mCallbacks
         );
-        isUserNew(new FirebaseCallback() {
-            @Override
-            public void onCallback(Object data) {
-                firstTimeEnter = (boolean) data;
-            }
-        });
     }
 
     private void resendVerificationCode(String phoneNumber, PhoneAuthProvider.ForceResendingToken mResendToken){
@@ -265,7 +268,6 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
                     textViewRepetitionCode
                             .setText("Повторно відправити код (" + millisUntilFinished / 1000 + ")");
                 }
-
                 public void onFinish() {
                     textViewRepetitionCode.setText("Повторно відправити код");
                     textViewRepetitionCode.setEnabled(true);
@@ -315,7 +317,7 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
-                    Intent intent = new Intent(LoginActivity.this, MainScreenActivity.class);
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }

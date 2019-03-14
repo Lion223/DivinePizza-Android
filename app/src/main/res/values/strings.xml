@@ -6,4 +6,12 @@
     <string name="confirm_code">Код підтвердження</string>
     <string name="name_hint">Ім\'я</string>
     <string name="name_description">Дане ім\'я буде використано для зв\'язку</string>
+    <string name="favorite_orders">Улюблені замовлення</string>
+    <string name="order_history">Історія замовлень</string>
+    <string name="location">Розташування</string>
+    <string name="settings">Налаштування</string>
+    <string name="log_out">Вихід з акаунту</string>
+    <string name="about">Про сервіс</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
 </resources>

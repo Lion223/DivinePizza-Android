@@ -21,7 +21,7 @@ public class CustomToast {
     }
 
     public void show(String message) {
-        toast = Toast.makeText(activity, message, Toast.LENGTH_LONG);
+        toast = Toast.makeText(activity, message, Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.BOTTOM, 0, 50);
         View view = toast.getView();
         view.getBackground().setColorFilter(bgColor,PorterDuff.Mode.SRC_IN);
