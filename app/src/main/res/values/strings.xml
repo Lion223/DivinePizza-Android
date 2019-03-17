@@ -12,6 +12,9 @@
     <string name="settings">Налаштування</string>
     <string name="log_out">Вихід з акаунту</string>
     <string name="about">Про сервіс</string>
-    <string name="open">Open</string>
-    <string name="close">Close</string>
+    <string name="navigation_drawer_open">Відкрити бокове меню</string>
+    <string name="navigation_drawer_close">Закрити бокове меню</string>
+    <string name="tab1_name">Піци</string>
+    <string name="tab2_name">Салати</string>
+    <string name="tab3_name">Напитки</string>
 </resources>

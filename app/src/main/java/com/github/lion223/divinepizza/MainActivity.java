@@ -1,144 +1,111 @@
 package com.github.lion223.divinepizza;
 
-import android.graphics.Color;
-import android.support.design.widget.NavigationView;
-import android.support.v4.widget.DrawerLayout;
+import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.ActionBar;
+import android.view.View;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navView;
-    private LinearLayout layout;
-    private ActionBarDrawerToggle dToggle;
 
     private CustomToast cToast;
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
-        return true;
-    }
-
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if(dToggle.onOptionsItemSelected(item)){
-            return true;
-        }
-        switch (item.getItemId()) {
-            case R.id.shoppingcart:
-                cToast.show("kek");
-                return false;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.drawer);
+        setContentView(R.layout.activity_main);
 
-        layout = findViewById(R.id.layout);
-
-        cToast = new CustomToast(Color.rgb(28,28,28), Color.WHITE, this, new Toast(getApplicationContext()));
         setToolbar();
         configureNavigationDrawer();
     }
 
     @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
 
-            /*
-            case R.id.sign_out:
-                signOut();
-                break;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.activity_main_toolbar, menu);
+        return true;
+    }
 
-            case R.id.get_user:
-                getInfo();
-                break;
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
 
-            default:
-                break;
-                        */
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.shopping_cart) {
+            return true;
         }
 
+        return super.onOptionsItemSelected(item);
+    }
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.favorite_orders) {
+            // Handle the camera action
+        } else if (id == R.id.order_history) {
+
+        } else if (id == R.id.location) {
+
+        } else if (id == R.id.settings) {
+
+        } else if (id == R.id.log_out) {
+
+        } else if (id == R.id.about) {
+
+        }
+
+        drawerLayout.closeDrawer(GravityCompat.START);
+        return true;
     }
 
     private void setToolbar() {
         toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        ActionBar actionbar = getSupportActionBar();
-        toolbar.bringToFront();
-        actionbar.setDisplayHomeAsUpEnabled(true);
-        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
     }
 
     private void configureNavigationDrawer() {
         drawerLayout = findViewById(R.id.drawer_layout);
-        dToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close);
-        drawerLayout.addDrawerListener(dToggle);
-        dToggle.syncState();
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
         navView = findViewById(R.id.nav_view);
+        navView.setNavigationItemSelectedListener(this);
         View headerView = navView.getHeaderView(0);
         TextView kek = headerView.findViewById(R.id.name);
         kek.setText("Hello");
-        navView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem menuItem) {
-                /*
-                Fragment f = null;
-                int itemId = menuItem.getItemId();
-                if (itemId == R.id.refresh) {
-                    f = new RefreshFragment();
-                } else if (itemId == R.id.stop) {
-                    f = new StopFragment();
-                }
-                if (f != null) {
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.frame, f);
-                    transaction.commit();
-                    drawerLayout.closeDrawers();
-                    return true;
-                }
-                return false;
-            */
-                return true;
-            }
-
-        });
     }
-
-    private void getInfo(){
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            cToast.show("User is in");
-        } else {
-            cToast.show("User is none");
-        }
-    }
-
-    private void signOut(){
-        FirebaseAuth.getInstance().signOut();
-        cToast.show("Signed out");
-    }
-
 }

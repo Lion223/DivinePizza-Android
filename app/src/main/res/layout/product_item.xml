@@ -1,0 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="110dp">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="110dp"
+            android:layout_height="110dp"
+            android:background="#1c1c1c"
+            />
+
+        <View
+            android:id="@+id/horizontal_divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_toRightOf="@id/image"
+            android:layout_alignBottom="@id/image"
+            android:background="@color/colorGray" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/image"
+            android:paddingLeft="10dp">
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:textSize="14dp"
+                android:fontFamily="@font/montserrat_italic"
+                android:text="Королівська піца" />
+
+            <RelativeLayout
+                android:id="@+id/types_layout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_below="@id/name">
+
+                <LinearLayout
+                    android:id="@+id/meat_type"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:background="@drawable/border_card"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_meat_icon"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/cheese_type"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:background="@drawable/border_card"
+                    android:layout_toRightOf="@id/meat_type"
+                    android:layout_marginLeft="5dp"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_cheese_icon"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/vegetable_type"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:background="@drawable/border_card"
+                    android:layout_toRightOf="@id/cheese_type"
+                    android:layout_marginLeft="5dp"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_vegetable_icon"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/seafood_type"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:gravity="center"
+                    android:background="@drawable/border_card"
+                    android:layout_toRightOf="@id/vegetable_type"
+                    android:layout_marginLeft="5dp"
+                    android:padding="5dp">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_seafood_icon"/>
+                </LinearLayout>
+
+            </RelativeLayout>
+
+
+            <LinearLayout
+                android:id="@+id/diameter_layout"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/types_layout"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/border_card"
+                android:padding="5dp" >
+
+                <TextView
+                    android:id="@+id/diameter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="35"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom"
+                    android:layout_marginLeft="2dp"
+                    android:textSize="14sp"
+                    android:text="см"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <Spinner
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/spinner"
+                    />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/rating_layout"
+                android:layout_width="65dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/types_layout"
+                android:layout_toRightOf="@id/diameter_layout"
+                android:gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginLeft="5dp"
+                android:background="@drawable/border_card"
+                android:padding="5dp" >
+
+                <TextView
+                    android:id="@+id/rating"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    android:text="4.5"
+                    android:textColor="@color/colorPrimaryDark"/>
+
+                <ImageView
+                    android:id="@+id/rating_img"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/ic_star_black_24dp"/>
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/vertical_divider"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/rating_layout"
+                android:layout_marginLeft="10dp"
+                android:background="@color/colorGray" />
+
+            <TextView
+                android:id="@+id/price"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/vertical_divider"
+                android:gravity="center"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:textSize="20sp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="₴100"
+                android:textColor="@color/colorPrimaryDark"/>
+
+            <View
+                android:id="@+id/vertical_divider2"
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/price"
+                android:background="@color/colorGray" />
+
+            <LinearLayout
+                android:id="@+id/controller"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/vertical_divider2"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/add_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="33dp"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textSize="16sp"
+                    android:text="+"/>
+
+                <Button
+                    android:id="@+id/buy_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:background="@color/colorPrimaryDark"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textSize="16sp"
+                    android:text="1"/>
+
+                <Button
+                    android:id="@+id/minus_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="33dp"
+                    android:background="@color/colorPrimary"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:textSize="16sp"
+                    android:text="-"/>
+
+
+            </LinearLayout>
+
+
+        </RelativeLayout>
+
+
+
+    </RelativeLayout>
+
+
+</android.support.v7.widget.CardView>

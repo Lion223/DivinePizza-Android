@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="120dp"
-    android:padding="40dp"
-    android:background="@color/colorPrimaryDark">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:background="@color/colorPrimaryDark"
+    android:gravity="center"
+    android:paddingLeft="30dp"
+    android:paddingRight="30dp"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:contentDescription="@string/logo_desc"
+        app:srcCompat="@drawable/small_onblack_logo" />
 
     <TextView
         android:id="@+id/name"
@@ -20,12 +30,5 @@
         android:text="Мобільний номер"
         android:layout_below="@id/name"
         android:textColor="@color/colorGray" />
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:background="@drawable/small_onblack_logo" />
 
 </RelativeLayout>
