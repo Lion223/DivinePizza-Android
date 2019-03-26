@@ -2,6 +2,7 @@ package com.github.lion223.divinepizza;
 
 import android.app.Activity;
 import android.graphics.PorterDuff;
+import android.support.v4.app.Fragment;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.TextView;

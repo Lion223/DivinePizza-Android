@@ -3,7 +3,7 @@
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/spinner_view"
         android:layout_width="match_parent"
-        android:textColor="@color/black"
+        android:textColor="@color/colorPrimaryDark"
         android:textSize="12dp"
         android:layout_height="36dp"
         android:gravity="left|center_vertical"/>

@@ -1,8 +1,11 @@
 package com.github.lion223.divinepizza;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -16,8 +19,15 @@ import android.view.MenuItem;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        PizzasFragment.OnFragmentInteractionListener,
+        SaladsFragment.OnFragmentInteractionListener,
+        DrinksFragment.OnFragmentInteractionListener {
 
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
@@ -25,10 +35,18 @@ public class MainActivity extends AppCompatActivity
 
     private CustomToast cToast;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        TabLayout tabLayout = findViewById(R.id.tab_layout);
+        ViewPager viewPager = findViewById(R.id.view_pager);
+
+        TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(tabsPagerAdapter);
+        tabLayout.setupWithViewPager(viewPager);
 
         setToolbar();
         configureNavigationDrawer();
@@ -87,6 +105,11 @@ public class MainActivity extends AppCompatActivity
 
         drawerLayout.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onFragmentInteraction(Uri uri){
+        //you can leave it empty
     }
 
     private void setToolbar() {
