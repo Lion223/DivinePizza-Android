@@ -1,21 +1,25 @@
-package com.github.lion223.divinepizza;
+package com.github.lion223.divinepizza.Fragments;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Color;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.github.lion223.divinepizza.Activities.PizzaProductActivity;
+import com.github.lion223.divinepizza.CustomToast;
+import com.github.lion223.divinepizza.Models.PizzaProductModel;
+import com.github.lion223.divinepizza.Adapters.PizzaProductAdapter;
+import com.github.lion223.divinepizza.R;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 
@@ -102,34 +106,44 @@ public class PizzasFragment extends Fragment {
     private void setUpRecyclerView(){
         Query query = pizzasRef.orderBy("price", Query.Direction.DESCENDING);
 
-        FirestoreRecyclerOptions<PizzaProduct> options = new FirestoreRecyclerOptions.Builder<PizzaProduct>()
-                .setQuery(query, PizzaProduct.class)
+        FirestoreRecyclerOptions<PizzaProductModel> options = new FirestoreRecyclerOptions.Builder<PizzaProductModel>()
+                .setQuery(query, PizzaProductModel.class)
                 .build();
 
-        adapter = new PizzaProductAdapter(options);
-        RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
+        adapter = new PizzaProductAdapter(options, getActivity());
+        RecyclerView recyclerView = view.findViewById(R.id.pizza_recycler_view);
         if(recyclerView == null){
-            Log.d("Recycler", "null;");
             return;
         }
-        Log.d("Recycler", "not null");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+        adapter.setOnItemClickListener(new PizzaProductAdapter.OnItemClickListener() {
+            @Override
+            public void OnImageClick(DocumentSnapshot documentSnapshot, int position) {
+                Intent intent = new Intent(getActivity(), PizzaProductActivity.class);
+                intent.putExtra("pid", documentSnapshot.getId());
+                startActivity(intent);
+            }
+
+            @Override
+            public void OnBuyBtnClick(DocumentSnapshot documentSnapshot, int quantity) {
+                String id = documentSnapshot.getId();
+                Toast.makeText(getContext(), id + " , q: " + quantity, Toast.LENGTH_SHORT).show();
+            }
+        });
 
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
         adapter.startListening();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-
         adapter.stopListening();
     }
 }

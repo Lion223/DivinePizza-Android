@@ -1,4 +1,4 @@
-package com.github.lion223.divinepizza;
+package com.github.lion223.divinepizza.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,9 +14,14 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.lion223.divinepizza.CustomToast;
+import com.github.lion223.divinepizza.FirebaseCallback;
+import com.github.lion223.divinepizza.PopDialog;
+import com.github.lion223.divinepizza.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.TaskExecutors;
+import com.google.common.base.CharMatcher;
 import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -66,9 +71,9 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
         users = db.collection("users");
         initCallbacks();
 
-        editTextPhoneNumber = findViewById(R.id.phone_number);
-        editTextConfirmCode = findViewById(R.id.confirm_code);
-        textViewRepetitionCode = findViewById(R.id.repeat_code);
+        editTextPhoneNumber = findViewById(R.id.login_phone_number);
+        editTextConfirmCode = findViewById(R.id.login_confirm_code);
+        textViewRepetitionCode = findViewById(R.id.login_repeat_code);
 
         textViewRepetitionCode.setVisibility(View.INVISIBLE);
 
@@ -158,6 +163,7 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
     private boolean isPhoneNumberCorrect(){
         phoneNumber = editTextPhoneNumber.getText().toString();
         if(phoneNumber.length() == 18 && phoneNumber.substring(0,5).equals("+38(0")){
+            phoneNumber = CharMatcher.anyOf("( -)").removeFrom(phoneNumber);
             return true;
         }
         else{

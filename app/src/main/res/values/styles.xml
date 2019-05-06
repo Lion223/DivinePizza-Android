@@ -17,4 +17,17 @@
 
     <!-- Темна тема -->
 
+
+    <style name="ProductItemSpinner">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ProductSpinner">
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+        <item name="android:fontFamily">@font/montserrat_bold</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
 </resources>

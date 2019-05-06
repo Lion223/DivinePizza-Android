@@ -1,7 +1,9 @@
-package com.github.lion223.divinepizza;
+package com.github.lion223.divinepizza.Activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.github.lion223.divinepizza.R;
 
 public class SplashActivity extends AppCompatActivity {
 

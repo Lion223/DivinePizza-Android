@@ -4,5 +4,6 @@
     <color name="colorPrimary">#ffffff</color>
     <color name="colorPrimaryDark">#1c1c1c</color>
     <color name="colorGray">#b1b1b1</color>
+    <color name="colorLightGray">#1F000000</color>
     <color name="iconColorGray">#757575</color>
 </resources>

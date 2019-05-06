@@ -10,6 +10,7 @@
     android:orientation="vertical" >
 
     <ImageView
+        android:id="@+id/nav_header_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -17,18 +18,18 @@
         app:srcCompat="@drawable/small_onblack_logo" />
 
     <TextView
-        android:id="@+id/name"
+        android:id="@+id/nav_header_user_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Ім'я"
         android:textColor="@color/colorPrimary" />
 
     <TextView
-        android:id="@+id/phone_number"
+        android:id="@+id/nav_header_user_phone_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Мобільний номер"
-        android:layout_below="@id/name"
+        android:layout_below="@id/nav_header_user_name"
         android:textColor="@color/colorGray" />
 
 </RelativeLayout>

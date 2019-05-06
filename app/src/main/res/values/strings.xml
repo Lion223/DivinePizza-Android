@@ -20,4 +20,19 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="to_cart">В кошик</string>
+    <string name="price_placeholder">$####</string>
+    <string name="plus_sign">+</string>
+    <string name="_1">1</string>
+    <string name="minus_sign">-</string>
+    <string name="ingredient_placeholder">Інгредієнт, Інгредієнт, Інгредієнт</string>
+    <string name="weight_placeholder">### гр</string>
+    <string name="pizza_name">Назва піци</string>
+    <string name="rating_placeholder">#.#</string>
+    <string name="diameter_placeholder">## см</string>
+    <string name="rating_count_placeholder">(###)</string>
+    <string name="price">₴%1$s</string>
+    <string name="weight">%1$s гр</string>
+    <string name="diameter">%1$s см</string>
+    <string name="cart_item_placeholder">Назва продукту</string>
 </resources>

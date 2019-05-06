@@ -32,7 +32,7 @@ public class PopDialog extends AppCompatDialogFragment {
                     }
                 });
 
-        editTextName = view.findViewById(R.id.name);
+        editTextName = view.findViewById(R.id.dialog_name);
 
         return builder.create();
     }

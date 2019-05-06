@@ -1,12 +1,11 @@
-package com.github.lion223.divinepizza;
+package com.github.lion223.divinepizza.Activities;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,12 +15,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.lion223.divinepizza.CustomToast;
+import com.github.lion223.divinepizza.FirebaseCallback;
+import com.github.lion223.divinepizza.Fragments.DrinksFragment;
+import com.github.lion223.divinepizza.Fragments.PizzasFragment;
+import com.github.lion223.divinepizza.R;
+import com.github.lion223.divinepizza.Fragments.SaladsFragment;
+import com.github.lion223.divinepizza.Adapters.TabsPagerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.ListenerRegistration;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nullable;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
@@ -32,6 +50,12 @@ public class MainActivity extends AppCompatActivity
     private Toolbar toolbar;
     private DrawerLayout drawerLayout;
     private NavigationView navView;
+    private String userName;
+    private String userPhoneNumber;
+
+    private ListenerRegistration listener;
+
+    private FirebaseUser currentUser;
 
     private CustomToast cToast;
 
@@ -41,15 +65,23 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        TabLayout tabLayout = findViewById(R.id.tab_layout);
-        ViewPager viewPager = findViewById(R.id.view_pager);
+
+        TabLayout tabLayout = findViewById(R.id.main_tab_layout);
+        ViewPager viewPager = findViewById(R.id.main_view_pager);
 
         TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(tabsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
         setToolbar();
-        configureNavigationDrawer();
+        getUserName(new FirebaseCallback() {
+            @Override
+            public void onCallback(Object data) {
+                userName = (String) data;
+                configureNavigationDrawer();
+
+            }
+        });
     }
 
     @Override
@@ -113,9 +145,42 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setToolbar() {
-        toolbar = findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.pizza_product_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
+    }
+
+    private void getUserName(@NonNull final FirebaseCallback firebaseCallback){
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+        if(currentUser != null){
+            CollectionReference users = FirebaseFirestore.getInstance().collection("users");
+            userPhoneNumber = currentUser.getPhoneNumber();
+            listener = users.whereEqualTo("phone_number", userPhoneNumber).addSnapshotListener(new EventListener<QuerySnapshot>() {
+                @Override
+                public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                    if(!queryDocumentSnapshots.isEmpty()){
+                        userName = queryDocumentSnapshots.getDocuments().get(0).get("name").toString();
+                        configureNavigationDrawer();
+                    }
+                }
+            });
+
+
+            /*
+            users.whereEqualTo("phone_number", userPhoneNumber).get().
+            users.whereEqualTo("phone_number", userPhoneNumber)
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if(task.isSuccessful()){
+                                QuerySnapshot qs = task.getResult();
+                                firebaseCallback.onCallback(qs.getDocuments().get(0).get("name").toString());
+                            }
+                        }
+                    });
+                    */
+        }
     }
 
     private void configureNavigationDrawer() {
@@ -125,10 +190,20 @@ public class MainActivity extends AppCompatActivity
         drawerLayout.addDrawerListener(toggle);
         toggle.syncState();
 
-        navView = findViewById(R.id.nav_view);
+        navView = findViewById(R.id.main_nav_view);
         navView.setNavigationItemSelectedListener(this);
         View headerView = navView.getHeaderView(0);
-        TextView kek = headerView.findViewById(R.id.name);
-        kek.setText("Hello");
+
+        TextView TV_userName = headerView.findViewById(R.id.nav_header_user_name);
+        TextView TV_userPhoneNumber = headerView.findViewById(R.id.nav_header_user_phone_number);
+        TV_userName.setText(userName);
+        TV_userPhoneNumber.setText(userPhoneNumber);
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        listener.remove();
     }
 }
