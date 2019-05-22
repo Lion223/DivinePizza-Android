@@ -1,0 +1,290 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Activities.SaladProductActivity">
+
+    <android.support.design.widget.AppBarLayout
+        android:id="@+id/salad_product_app_bar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <android.support.v7.widget.Toolbar
+                android:id="@+id/salad_product_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary" />
+
+            <TextView
+                android:id="@+id/salad_product_title"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/montserrat_bold"
+                android:textSize="18sp"
+                android:text="@string/app_name"/>
+
+        </RelativeLayout>
+
+    </android.support.design.widget.AppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/salad_product_visual_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/salad_product_app_bar_layout"
+        android:layout_marginTop="10dp">
+
+        <ImageView
+            android:id="@+id/salad_product_pic"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"/>
+
+        <RelativeLayout
+            android:id="@+id/salad_product_rating_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            >
+
+            <RelativeLayout
+                android:id="@+id/salad_product_rating_star"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:background="@drawable/ic_star_black_24dp">
+
+                <TextView
+                    android:id="@+id/salad_product_rating_mark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:textColor="@color/colorPrimary"
+                    android:fontFamily="@font/montserrat_bold"
+                    android:text="@string/rating_placeholder"
+                    android:textSize="14sp"
+                    />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/salad_product_rating_count"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimaryDark"
+                android:fontFamily="@font/montserrat_regular"
+                android:layout_below="@id/salad_product_rating_star"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="-13dp"
+                android:text="@string/rating_count_placeholder"
+                android:textSize="14sp"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/salad_product_size"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/salad_product_visual_layout"
+        android:layout_marginTop="15dp"
+        android:layout_centerInParent="true">
+
+        <TextView
+            android:id="@+id/salad_product_weight"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/weight_placeholder"
+            android:fontFamily="@font/montserrat_medium"
+            android:textColor="@color/colorPrimaryDark"
+            />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/salad_item_types_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:layout_below="@id/salad_product_size"
+        android:layout_centerInParent="true">
+
+        <LinearLayout
+            android:id="@+id/salad_item_meat_type"
+            android:orientation="horizontal"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:background="@drawable/border_card"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_meat_icon"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/salad_item_fruit_type"
+            android:orientation="horizontal"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:background="@drawable/border_card"
+            android:layout_toEndOf="@id/salad_item_meat_type"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_fruit_icon_black"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/salad_item_vegetable_type"
+            android:orientation="horizontal"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:background="@drawable/border_card"
+            android:layout_toEndOf="@id/salad_item_fruit_type"
+            android:layout_marginEnd="10dp"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="12dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_vegetable_icon"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/salad_item_seafood_type"
+            android:orientation="horizontal"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:gravity="center"
+            android:background="@drawable/border_card"
+            android:layout_toEndOf="@id/salad_item_vegetable_type"
+            android:padding="5dp">
+
+            <ImageView
+                android:layout_width="30dp"
+                android:layout_height="20dp"
+                android:background="@drawable/ic_seafood_icon"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/salad_item_horizontal_divider"
+        android:layout_width="250dp"
+        android:layout_height="2dp"
+        android:layout_marginTop="20dp"
+        android:background="@color/colorGray"
+        android:layout_centerInParent="true"
+        android:layout_below="@id/salad_item_types_layout"/>
+
+    <TextView
+        android:id="@+id/salad_item_desc"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/salad_item_horizontal_divider"
+        android:layout_above="@id/salad_product_panel"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/montserrat_light"
+        android:textColor="@color/colorPrimaryDark"
+        android:paddingBottom="10dp"
+        android:textSize="16sp"
+        android:textAlignment="center"
+        android:text="@string/ingredient_placeholder"
+        android:singleLine="false"
+        android:maxLines="2"
+        android:scrollbars="vertical"
+        />
+
+    <RelativeLayout
+        android:id="@+id/salad_product_panel"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/colorPrimaryDark">
+
+        <RelativeLayout
+            android:id="@+id/salad_item_controller"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/salad_item_minus_button"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/montserrat_bold"
+                android:stateListAnimator="@null"
+                android:textSize="18sp"
+                android:text="@string/minus_sign"/>
+
+            <TextView
+                android:id="@+id/salad_item_quantity_button"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:layout_toEndOf="@id/salad_item_minus_button"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/montserrat_bold"
+                android:textSize="18sp"
+                android:gravity="center"
+                android:text="@string/_1"/>
+
+            <Button
+                android:id="@+id/salad_item_add_button"
+                android:layout_width="40dp"
+                android:layout_height="match_parent"
+                android:background="@android:color/transparent"
+                android:layout_toEndOf="@id/salad_item_quantity_button"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/montserrat_bold"
+                android:textSize="18sp"
+                android:text="@string/plus_sign"/>
+
+            <TextView
+                android:id="@+id/salad_item_price"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="18sp"
+                android:fontFamily="@font/montserrat_bold"
+                android:text="@string/price_placeholder"
+                android:textColor="@color/colorPrimary"/>
+
+            <Button
+                android:id="@+id/salad_product_buy_button"
+                android:layout_width="110dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorAccent"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/colorPrimary"
+                android:fontFamily="@font/montserrat_bold"
+                android:textSize="14sp"
+                android:text="@string/to_cart"
+                />
+
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+</RelativeLayout>

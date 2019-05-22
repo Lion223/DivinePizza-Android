@@ -9,11 +9,11 @@ import com.github.lion223.divinepizza.Fragments.DrinksFragment;
 import com.github.lion223.divinepizza.Fragments.PizzasFragment;
 import com.github.lion223.divinepizza.Fragments.SaladsFragment;
 
-public class TabsPagerAdapter extends FragmentPagerAdapter {
+public class MainTabsPagerAdapter extends FragmentPagerAdapter {
 
     String[] tabArray = new String[] {"Піци", "Салати", "Напитки"};
 
-    public TabsPagerAdapter(FragmentManager fm) {
+    public MainTabsPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 

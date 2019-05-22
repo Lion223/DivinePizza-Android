@@ -2,6 +2,7 @@ package com.github.lion223.divinepizza.Activities;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.NonNull;
@@ -26,8 +27,10 @@ import com.google.firebase.FirebaseException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -51,6 +54,7 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
     private FirebaseFirestore db;
     private CollectionReference users;
     private DocumentReference docRef;
+    private FirebaseUser user;
 
     // змінні, які зберігають значення елементів вікна
     private String phoneNumber;
@@ -60,6 +64,7 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
     private CustomToast cToast;
     private CountDownTimer countDownTimer;
 
+    private final String FB_TAG = "Firebase: ";
     private Boolean firstTimeEnter = null;
 
     @Override
@@ -288,7 +293,7 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
     private void isUserNew(@NonNull final FirebaseCallback firebaseCallback){
         users.whereEqualTo("phone_number", phoneNumber)
             .get()
-            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if(task.isSuccessful()){
@@ -308,6 +313,20 @@ public class LoginActivity extends AppCompatActivity implements PopDialog.PopDia
     @Override
     public void applyName(String name) {
         username = name;
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                .setDisplayName(username)
+                .build();
+
+        user.updateProfile(profileUpdates)
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d(FB_TAG, "User profile updated.");
+                        }
+                    }
+                });
     }
 
     @Override

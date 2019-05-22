@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,11 +19,25 @@ import com.github.lion223.divinepizza.CustomToast;
 import com.github.lion223.divinepizza.Models.PizzaProductModel;
 import com.github.lion223.divinepizza.Adapters.PizzaProductAdapter;
 import com.github.lion223.divinepizza.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 
+import org.w3c.dom.Document;
+
+import java.util.HashMap;
+
+import javax.annotation.Nullable;
 
 
 public class PizzasFragment extends Fragment {
@@ -35,6 +50,8 @@ public class PizzasFragment extends Fragment {
     private FirebaseFirestore db = FirebaseFirestore.getInstance();;
     private CollectionReference pizzasRef = db.collection("pizzas");
     private PizzaProductAdapter adapter;
+    private FirebaseUser currentUser;
+    private CollectionReference currentCart;
 
     private CustomToast cToast;
 
@@ -63,6 +80,7 @@ public class PizzasFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
 
     }
 
@@ -104,7 +122,7 @@ public class PizzasFragment extends Fragment {
     }
 
     private void setUpRecyclerView(){
-        Query query = pizzasRef.orderBy("price", Query.Direction.DESCENDING);
+        Query query = pizzasRef.orderBy("price", Query.Direction.ASCENDING);
 
         FirestoreRecyclerOptions<PizzaProductModel> options = new FirestoreRecyclerOptions.Builder<PizzaProductModel>()
                 .setQuery(query, PizzaProductModel.class)
@@ -127,12 +145,30 @@ public class PizzasFragment extends Fragment {
             }
 
             @Override
-            public void OnBuyBtnClick(DocumentSnapshot documentSnapshot, int quantity) {
-                String id = documentSnapshot.getId();
-                Toast.makeText(getContext(), id + " , q: " + quantity, Toast.LENGTH_SHORT).show();
+            public void OnBuyBtnClick(DocumentSnapshot documentSnapshot, int quantity, String name, String price, String totalPrice) {
+                final String id = documentSnapshot.getId();
+                final HashMap<String, Object> product = new HashMap<>();
+                product.put("name", name);
+                product.put("price", price);
+                product.put("quantity", String.valueOf(quantity));
+                product.put("total_price", totalPrice);
+                if (currentUser != null) {
+                    db.collection("users").whereEqualTo("phone_number",
+                            currentUser.getPhoneNumber()).get().addOnCompleteListener(getActivity(),
+                            new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                QuerySnapshot qs = task.getResult();
+                                DocumentReference docRef = qs.getDocuments().get(0).getReference();
+                                currentCart = docRef.collection("CurrentCart");
+                                currentCart.document("item_" + id).set(product, SetOptions.merge());
+                            }
+                        }
+                    });
+                }
             }
         });
-
     }
 
     @Override

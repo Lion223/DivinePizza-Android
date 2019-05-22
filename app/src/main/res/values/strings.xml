@@ -14,9 +14,9 @@
     <string name="about">Про сервіс</string>
     <string name="navigation_drawer_open">Відкрити бокове меню</string>
     <string name="navigation_drawer_close">Закрити бокове меню</string>
-    <string name="tab1_name">Піци</string>
-    <string name="tab2_name">Салати</string>
-    <string name="tab3_name">Напитки</string>
+    <string name="main_tab1_name">Піци</string>
+    <string name="main_tab2_name">Салати</string>
+    <string name="main_tab3_name">Напитки</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
@@ -27,12 +27,22 @@
     <string name="minus_sign">-</string>
     <string name="ingredient_placeholder">Інгредієнт, Інгредієнт, Інгредієнт</string>
     <string name="weight_placeholder">### гр</string>
-    <string name="pizza_name">Назва піци</string>
+    <string name="pizza_name_placeholder">Назва піци</string>
     <string name="rating_placeholder">#.#</string>
     <string name="diameter_placeholder">## см</string>
     <string name="rating_count_placeholder">(###)</string>
     <string name="price">₴%1$s</string>
     <string name="weight">%1$s гр</string>
+    <string name="weight_l">%1$s л</string>
     <string name="diameter">%1$s см</string>
     <string name="cart_item_placeholder">Назва продукту</string>
+    <string name="total_price_placeholder">Сума:</string>
+    <string name="salad_name_placeholder">Назва салату</string>
+    <string name="drink_name_placeholder">Назва напитку</string>
+    <string name="weight_l_placeholder">#,# л</string>
+    <string name="title_activity_order_details">OrderDetails</string>
+    <string name="tab_text_1">Tab 1</string>
+    <string name="tab_text_2">Tab 2</string>
+    <string name="orderdetails_tab1_name">Самовивіз</string>
+    <string name="orderdetails_tab2_name">Кур\'єр</string>
 </resources>

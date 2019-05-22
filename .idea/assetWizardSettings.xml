@@ -35,9 +35,10 @@
                           <map>
                             <entry key="assetSourceType" value="FILE" />
                             <entry key="color" value="1c1c1c" />
-                            <entry key="outputName" value="ic_arrowdown" />
+                            <entry key="outputName" value="ic_nonalco_icon_black" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="W:\nulp\4\sec.sem\thesis\app\icons\arrowdown.svg" />
+                            <entry key="sourceFile" value="W:\nulp\4\thesis\app\icons\nonalco-icon.svg" />
+                            <entry key="width" value="15" />
                           </map>
                         </option>
                       </PersistentState>

@@ -9,21 +9,22 @@
         android:layout_height="100dp">
 
         <ImageView
-            android:id="@+id/cart_item_image"
+            android:id="@+id/pizza_item_image"
             android:layout_width="100dp"
             android:layout_height="100dp"
-            android:background="#1c1c1c" />
+            android:scaleType="center"
+            android:src="@color/colorPrimaryDark" />
 
         <View
-            android:id="@+id/cart_product_horizontal_divider"
+            android:id="@+id/pizza_item_horizontal_divider"
             android:layout_width="match_parent"
             android:layout_height="2dp"
-            android:layout_toEndOf="@id/cart_item_image"
-            android:layout_alignBottom="@id/cart_item_image"
+            android:layout_toEndOf="@id/pizza_item_image"
+            android:layout_alignBottom="@id/pizza_item_image"
             android:background="@color/colorLightGray" />
 
         <TextView
-            android:id="@+id/cart_item_name"
+            android:id="@+id/pizza_item_name"
             android:layout_width="145dp"
             android:layout_height="wrap_content"
             android:paddingStart="10dp"
@@ -32,20 +33,21 @@
             android:layout_marginTop="3dp"
             android:textColor="@color/colorPrimaryDark"
             android:maxLines="1"
-            android:text="@string/pizza_name"
-            android:layout_toEndOf="@id/cart_item_image"
+            android:text="@string/pizza_name_placeholder"
+            android:layout_toEndOf="@id/pizza_item_image"
+            android:ellipsize="end"
             />
 
         <RelativeLayout
-            android:id="@+id/cart_item_content"
+            android:id="@+id/pizza_item_content"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_toEndOf="@id/cart_item_image"
+            android:layout_toEndOf="@id/pizza_item_image"
             android:paddingStart="10dp"
             android:paddingEnd="0dp">
 
             <LinearLayout
-                android:id="@+id/pizza_product_desc"
+                android:id="@+id/pizza_item_desc"
                 android:layout_width="135dp"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
@@ -53,13 +55,13 @@
 
 
                 <RelativeLayout
-                    android:id="@+id/pizza_product_types_layout"
+                    android:id="@+id/pizza_item_types_layout"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp">
 
                     <LinearLayout
-                        android:id="@+id/pizza_product_meat_type"
+                        android:id="@+id/pizza_item_meat_type"
                         android:orientation="horizontal"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
@@ -75,13 +77,13 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/pizza_product_cheese_type"
+                        android:id="@+id/pizza_item_cheese_type"
                         android:orientation="horizontal"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:gravity="center"
                         android:background="@drawable/border_card"
-                        android:layout_toEndOf="@id/pizza_product_meat_type"
+                        android:layout_toEndOf="@id/pizza_item_meat_type"
                         android:layout_marginEnd="5dp"
                         android:padding="5dp">
 
@@ -92,13 +94,13 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/pizza_product_vegetable_type"
+                        android:id="@+id/pizza_item_vegetable_type"
                         android:orientation="horizontal"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:gravity="center"
                         android:background="@drawable/border_card"
-                        android:layout_toEndOf="@id/pizza_product_cheese_type"
+                        android:layout_toEndOf="@id/pizza_item_cheese_type"
                         android:layout_marginEnd="5dp"
                         android:padding="5dp">
 
@@ -109,13 +111,13 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/pizza_product_seafood_type"
+                        android:id="@+id/pizza_item_seafood_type"
                         android:orientation="horizontal"
                         android:layout_width="30dp"
                         android:layout_height="30dp"
                         android:gravity="center"
                         android:background="@drawable/border_card"
-                        android:layout_toEndOf="@id/pizza_product_vegetable_type"
+                        android:layout_toEndOf="@id/pizza_item_vegetable_type"
                         android:padding="5dp">
 
                         <ImageView
@@ -152,31 +154,6 @@
                             android:textSize="16sp"
                             android:fontFamily="@font/montserrat_regular2"
                             android:textColor="@color/colorPrimaryDark"/>
-
-                        <!--
-                        <Spinner
-                            android:id="@+id/item_spinner"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_centerVertical="true"
-                            android:layout_gravity="center"
-                            android:background="@android:color/transparent"
-                            android:gravity="center"
-                            android:layout_marginStart="-5dp"
-                            android:theme="@style/ProductItemSpinner"
-                            />
-
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:scaleType="center"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentEnd="true"
-                            android:layout_centerVertical="true"
-                            android:layout_gravity="center"
-                            android:layout_marginEnd="-5dp"
-                            android:src="@drawable/ic_arrowdown" />
-                            !-->
 
                     </RelativeLayout>
 
@@ -215,23 +192,23 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/cart_item_vertical_divider"
+                android:id="@+id/pizza_item_vertical_divider"
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
                 android:layout_marginStart="10dp"
                 android:background="@color/colorLightGray"
-                android:layout_toEndOf="@id/pizza_product_desc"/>
+                android:layout_toEndOf="@id/pizza_item_desc"/>
 
             <LinearLayout
                 android:id="@+id/pizza_item_price_layout"
                 android:orientation="horizontal"
                 android:layout_width="70dp"
                 android:layout_height="match_parent"
-                android:layout_toEndOf="@id/cart_item_vertical_divider"
+                android:layout_toEndOf="@id/pizza_item_vertical_divider"
                 >
 
                 <TextView
-                    android:id="@+id/cart_product_price"
+                    android:id="@+id/pizza_item_price"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -245,22 +222,22 @@
             </LinearLayout>
 
             <View
-                android:id="@+id/cart_item_vertical_divider2"
+                android:id="@+id/pizza_item_vertical_divider2"
                 android:layout_width="2dp"
                 android:layout_height="match_parent"
                 android:background="@color/colorLightGray"
                 android:layout_toEndOf="@id/pizza_item_price_layout"/>
 
             <LinearLayout
-                android:id="@+id/cart_product_controller"
+                android:id="@+id/pizza_item_controller"
                 android:orientation="vertical"
                 android:layout_width="40dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentEnd="true"
-                android:layout_toEndOf="@id/cart_item_vertical_divider2">
+                android:layout_toEndOf="@id/pizza_item_vertical_divider2">
 
                 <Button
-                    android:id="@+id/cart_product_add_button"
+                    android:id="@+id/pizza_item_add_button"
                     android:layout_width="match_parent"
                     android:layout_height="28dp"
                     android:background="@color/colorPrimary"
@@ -270,7 +247,7 @@
                     android:text="@string/plus_sign"/>
 
                 <Button
-                    android:id="@+id/cart_product_quantity_button"
+                    android:id="@+id/pizza_item_quantity_button"
                     android:layout_width="match_parent"
                     android:layout_height="40dp"
                     android:background="@color/colorPrimaryDark"
@@ -280,7 +257,7 @@
                     android:text="@string/_1"/>
 
                 <Button
-                    android:id="@+id/cart_product_minus_button"
+                    android:id="@+id/pizza_item_minus_button"
                     android:layout_width="match_parent"
                     android:layout_height="28dp"
                     android:background="@color/colorPrimary"

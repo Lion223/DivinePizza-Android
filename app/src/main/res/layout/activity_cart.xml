@@ -47,8 +47,42 @@
     <RelativeLayout
         android:id="@+id/price_panel"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        android:background="@color/colorLightGray"
         android:layout_above="@id/continue_btn">
+
+        <TextView
+            android:id="@+id/total_price_placeholder"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/total_price_placeholder"
+            android:layout_alignParentStart="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center"
+            android:layout_marginStart="10dp"/>
+
+        <View
+            android:id="@+id/cart_horizontal_divider"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/total_price_placeholder"
+            android:layout_toStartOf="@id/total_price"
+            android:layout_marginStart="20dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/colorLightGray" />
+
+        <TextView
+            android:id="@+id/total_price"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="@string/price_placeholder"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:fontFamily="@font/montserrat_bold"
+            android:gravity="center"
+            android:layout_marginEnd="10dp"/>
 
     </RelativeLayout>
 

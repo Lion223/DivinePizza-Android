@@ -1,6 +1,7 @@
 package com.github.lion223.divinepizza.Activities;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,15 +15,25 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.github.lion223.divinepizza.Adapters.PizzaProductAdapter;
 import com.github.lion223.divinepizza.App;
 import com.github.lion223.divinepizza.Models.PizzaProductModel;
 import com.github.lion223.divinepizza.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.SetOptions;
 import com.squareup.picasso.Picasso;
+
+import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
@@ -32,9 +43,11 @@ public class PizzaProductActivity extends AppCompatActivity implements Navigatio
     private String productId;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();;
     private CollectionReference pizzasRef = db.collection("pizzas");
+    private FirebaseUser currentUser;
+    private CollectionReference currentCart;
 
-    private TextView productName, productWeight, productDiam, productDesc, productPrice, productRating, productBuy;
-    private Button productAdd, productMinus;
+    private TextView productName, productWeight, productDiam, productDesc, productPrice, productRating, productQuantity;
+    private Button productAdd, productMinus, productBuy;
     private ImageView productPic;
     private LinearLayout productMeat, productCheese, productVeg, productSea;
 
@@ -42,22 +55,25 @@ public class PizzaProductActivity extends AppCompatActivity implements Navigatio
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pizza_product);
+        currentUser = FirebaseAuth.getInstance().getCurrentUser();
+
         productId = getIntent().getStringExtra("pid");
 
         productName = findViewById(R.id.pizza_product_title);
         productWeight = findViewById(R.id.pizza_product_weight);
         productDiam = findViewById(R.id.pizza_product_diameter);
-        productDesc = findViewById(R.id.pizza_product_desc);
+        productDesc = findViewById(R.id.pizza_item_desc);
         productPic = findViewById(R.id.pizza_product_pic);
-        productPrice = findViewById(R.id.cart_product_price);
-        productMeat = findViewById(R.id.pizza_product_meat_type);
-        productCheese = findViewById(R.id.pizza_product_cheese_type);
-        productVeg = findViewById(R.id.pizza_product_vegetable_type);
-        productSea = findViewById(R.id.pizza_product_seafood_type);
+        productPrice = findViewById(R.id.pizza_item_price);
+        productMeat = findViewById(R.id.pizza_item_meat_type);
+        productCheese = findViewById(R.id.pizza_item_cheese_type);
+        productVeg = findViewById(R.id.pizza_item_vegetable_type);
+        productSea = findViewById(R.id.pizza_item_seafood_type);
         productRating = findViewById(R.id.pizza_product_rating_mark);
-        productAdd = findViewById(R.id.cart_product_add_button);
-        productMinus = findViewById(R.id.cart_product_minus_button);
-        productBuy = findViewById(R.id.cart_product_quantity_button);
+        productAdd = findViewById(R.id.pizza_item_add_button);
+        productMinus = findViewById(R.id.pizza_item_minus_button);
+        productQuantity = findViewById(R.id.pizza_item_quantity_button);
+        productBuy = findViewById(R.id.pizza_product_buy_button);
 
         setToolbar();
         getProductDetails(productId);
@@ -67,11 +83,11 @@ public class PizzaProductActivity extends AppCompatActivity implements Navigatio
         productAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int quantity = Integer.parseInt(productBuy.getText().toString());
+                int quantity = Integer.parseInt(productQuantity.getText().toString());
                 if(quantity < 99){
                     quantity++;
                     int prev_price = Integer.parseInt(productPrice.getText().toString().substring(1));
-                    productBuy.setText(Integer.toString(quantity));
+                    productQuantity.setText(Integer.toString(quantity));
                     productPrice.setText(App.getContext().getResources().getString(R.string.price,
                             Integer.toString(prev_price + prev_price / (quantity - 1))));
                 }
@@ -81,14 +97,44 @@ public class PizzaProductActivity extends AppCompatActivity implements Navigatio
         productMinus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                int quantity = Integer.parseInt(productBuy.getText().toString());
+                int quantity = Integer.parseInt(productQuantity.getText().toString());
                 if(quantity > 1){
                     quantity--;
                     int prev_price = Integer.parseInt(productPrice.getText().toString().substring(1));
                     productPrice.setText(App.getContext().getResources().getString(R.string.price,
                             Integer.toString(prev_price - prev_price / (quantity + 1))));
-                    productBuy.setText(Integer.toString(quantity));
+                    productQuantity.setText(Integer.toString(quantity));
                 }
+            }
+        });
+
+        productBuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int quantity = Integer.parseInt(productQuantity.getText().toString());
+                int itemPrice = Integer.parseInt(productPrice.getText().toString().substring(1)) / quantity;
+
+                final HashMap<String, Object> product = new HashMap<>();
+                product.put("name", productName.getText());
+                product.put("price", Integer.toString(itemPrice));
+                product.put("quantity", String.valueOf(quantity));
+                product.put("total_price", productPrice.getText().toString().substring(1));
+                if (currentUser != null) {
+                    db.collection("users").whereEqualTo("phone_number",
+                            currentUser.getPhoneNumber()).get().addOnCompleteListener(PizzaProductActivity.this,
+                            new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        QuerySnapshot qs = task.getResult();
+                                        DocumentReference docRef = qs.getDocuments().get(0).getReference();
+                                        currentCart = docRef.collection("CurrentCart");
+                                        currentCart.document("item_" + productId).set(product, SetOptions.merge());
+                                    }
+                                }
+                            });
+                }
+
             }
         });
     }
@@ -99,7 +145,7 @@ public class PizzaProductActivity extends AppCompatActivity implements Navigatio
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                 if(documentSnapshot.exists()){
                     PizzaProductModel product = documentSnapshot.toObject(PizzaProductModel.class);
-                    Picasso.get().load(product.getImg_full_url()).into(productPic);
+                    Picasso.get().load(product.getImage()).into(productPic);
                     productName.setText(product.getName());
                     productWeight.setText(getResources().getString(R.string.weight, product.getWeight()));
                     productDiam.setText(getResources().getString(R.string.diameter, product.getDiameter()));

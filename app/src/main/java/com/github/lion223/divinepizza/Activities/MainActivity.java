@@ -23,21 +23,15 @@ import com.github.lion223.divinepizza.Fragments.DrinksFragment;
 import com.github.lion223.divinepizza.Fragments.PizzasFragment;
 import com.github.lion223.divinepizza.R;
 import com.github.lion223.divinepizza.Fragments.SaladsFragment;
-import com.github.lion223.divinepizza.Adapters.TabsPagerAdapter;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.github.lion223.divinepizza.Adapters.MainTabsPagerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.QuerySnapshot;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -69,8 +63,8 @@ public class MainActivity extends AppCompatActivity
         TabLayout tabLayout = findViewById(R.id.main_tab_layout);
         ViewPager viewPager = findViewById(R.id.main_view_pager);
 
-        TabsPagerAdapter tabsPagerAdapter = new TabsPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(tabsPagerAdapter);
+        MainTabsPagerAdapter mainTabsPagerAdapter = new MainTabsPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(mainTabsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 
         setToolbar();
@@ -109,6 +103,8 @@ public class MainActivity extends AppCompatActivity
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.shopping_cart) {
+            Intent intent = new Intent(MainActivity.this, CartActivity.class);
+            startActivity(intent);
             return true;
         }
 
@@ -130,6 +126,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.settings) {
 
         } else if (id == R.id.log_out) {
+            if(currentUser != null){
+                FirebaseAuth.getInstance().signOut();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
 
         } else if (id == R.id.about) {
 
@@ -145,7 +146,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void setToolbar() {
-        toolbar = findViewById(R.id.pizza_product_toolbar);
+        toolbar = findViewById(R.id.main_toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
     }

@@ -13,7 +13,7 @@
         android:id="@+id/login_logo"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/on_white_logo"
+        android:src="@drawable/onwhite_logo"
         android:layout_gravity="center"
         android:layout_marginTop="50sp"
         android:contentDescription="@string/logo_desc" />
